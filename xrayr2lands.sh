@@ -60,8 +60,6 @@ makeConfig() {
 	echo "---------------"
 	read -p "Nhập link website ( https://2lands.me ) :" airWebsite
 	echo "---------------"
-	read -p "API key của web :" airAPIKey
-	echo "---------------"
 	read -p "Số node ID :" makeNodeID
 	echo "---------------"
   read -p "Số node ID 443 :" makeNodeID443

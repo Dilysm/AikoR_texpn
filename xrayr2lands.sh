@@ -64,6 +64,8 @@ makeConfig() {
 	echo "---------------"
 	read -p "Số node ID :" makeNodeID
 	echo "---------------"
+  read -p "Số node ID 443 :" makeNodeID443
+	echo "---------------"
 	read -p "Giới hạn số thiết bị, nếu không muốn giới hạn hãy nhập 0 :" makeLimitdevice
 	echo "---------------"
 	read -p "Giới ip redis :" ipRedis
@@ -75,7 +77,7 @@ makeConfig() {
 		source ~/.bashrc
 		bash ~/.acme.sh/acme.sh --upgrade --auto-upgrade
 	fi
-         cat <<EOF >/etc/XrayR/config.yml
+         cat <<EOF >/etc/AikoR/aiko.yml
 Log:
   Level: warning # Log level: none, error, warning, info, debug 
   AccessPath: # /etc/AikoR/access.Log
@@ -151,7 +153,7 @@ Nodes: #Default AikoR config
     ApiConfig:
       ApiHost: "$airWebsite"
       ApiKey: "duongdinhtai2004"
-      NodeID: $makeNodeID
+      NodeID: $makeNodeID443
       NodeType: Trojan # Node type: V2ray, Trojan, Shadowsocks, Shadowsocks-Plugin
       Timeout: 30 # Timeout for the api request
       EnableVless: false # Enable Vless for V2ray Type

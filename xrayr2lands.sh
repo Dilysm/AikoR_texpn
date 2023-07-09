@@ -92,7 +92,7 @@ ConnectionConfig:
   BufferSize: 64 # The internal cache size of each connection, kB 
 Nodes: #Default AikoR config
   -
-    PanelType: "NewV2board" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
+    PanelType: "V2board" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
     ApiConfig:
       ApiHost: "$airWebsite"
       ApiKey: "duongdinhtai2004"
@@ -147,7 +147,7 @@ Nodes: #Default AikoR config
           CLOUDFLARE_EMAIL: dtai45412@gmail.com
           CLOUDFLARE_API_KEY: 7f63bf3bcaa7a6759b9b2160cddba6723495f
   -
-    PanelType: "NewV2board" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
+    PanelType: "V2board" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
     ApiConfig:
       ApiHost: "$airWebsite"
       ApiKey: "duongdinhtai2004"

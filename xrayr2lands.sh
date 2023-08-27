@@ -66,10 +66,10 @@ makeConfig() {
 	echo "---------------"
   read -p "Số node ID 443 :" makeNodeID443
 	echo "---------------"
-	read -p "Giới hạn số thiết bị, nếu không muốn giới hạn hãy nhập 0 :" makeLimitdevice
-	echo "---------------"
-	read -p "Giới ip redis :" ipRedis
-	echo "---------------"
+	#read -p "Giới hạn số thiết bị, nếu không muốn giới hạn hãy nhập 0 :" makeLimitdevice
+	#echo "---------------"
+	#read -p "Giới ip redis :" ipRedis
+	#echo "---------------"
 
 	rm -f /etc/AikoR/aiko.yml
 	if [[ -z $(~/.acme.sh/acme.sh -v 2>/dev/null) ]]; then

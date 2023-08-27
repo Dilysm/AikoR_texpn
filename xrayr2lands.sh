@@ -118,7 +118,7 @@ Nodes: #Default AikoR config
         LimitSpeed: 0 # The speedlimit of a limited user (unit: mbps)
         LimitDuration: 0 # How many minutes will the limiting last (unit: minute)
       GlobalDeviceLimitConfig:
-        Enable: false # Enable the global device limit of a user
+        Enable: true # Enable the global device limit of a user
         RedisAddr: $ipRedis # The redis server address
         RedisPassword: PASSWORD # Redis password
         RedisDB: 0 # Redis DB
@@ -173,7 +173,7 @@ Nodes: #Default AikoR config
         LimitSpeed: 0 # The speedlimit of a limited user (unit: mbps)
         LimitDuration: 0 # How many minutes will the limiting last (unit: minute)
       GlobalDeviceLimitConfig:
-        Enable: false # Enable the global device limit of a user
+        Enable: true # Enable the global device limit of a user
         RedisAddr: $ipRedis # The redis server address
         RedisPassword: PASSWORD # Redis password
         RedisDB: 0 # Redis DB

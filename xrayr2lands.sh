@@ -59,6 +59,8 @@ makeConfig() {
 	read -p "Nhập Subdomain của bạn :" subDomain
 	echo "---------------"
 	read -p "Nhập link website ( https://2lands.me ) :" airWebsite
+ 	echo "---------------"
+	read -p "Nhập type website :" airWebsitetype
 	echo "---------------"
 	read -p "Số node ID :" makeNodeID
 	echo "---------------"
@@ -69,7 +71,7 @@ makeConfig() {
 	read -p "Giới ip redis :" ipRedis
 	echo "---------------"
 
-	rm -f /etc/XrayR/config.yml
+	rm -f /etc/AikoR/aiko.yml
 	if [[ -z $(~/.acme.sh/acme.sh -v 2>/dev/null) ]]; then
 		curl https://get.acme.sh | sh -s email=script@github.com
 		source ~/.bashrc
@@ -85,14 +87,9 @@ RouteConfigPath: # /etc/AikoR/route.json # Path to route config, check https://x
 InboundConfigPath: # /etc/AikoR/custom_inbound.json # Path to custom inbound config, check https://xtls.github.io/config/inbound.html for help
 OutboundConfigPath: # /etc/AikoR/custom_outbound.json # Path to custom outbound config, check https://xtls.github.io/config/outbound.html for help
 ConnectionConfig:
-  Handshake: 4 # Handshake time limit, Second
-  ConnIdle: 30 # Connection idle time limit, Second
-  UplinkOnly: 2 # Time limit when the connection downstream is closed, Second
-  DownlinkOnly: 4 # Time limit when the connection is closed after the uplink is closed, Second
-  BufferSize: 64 # The internal cache size of each connection, kB 
 Nodes: #Default AikoR config
   -
-    PanelType: "V2board" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
+    PanelType: "$airWebsitetype" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
     ApiConfig:
       ApiHost: "$airWebsite"
       ApiKey: "duongdinhtai2004"
@@ -147,7 +144,7 @@ Nodes: #Default AikoR config
           CLOUDFLARE_EMAIL: dtai45412@gmail.com
           CLOUDFLARE_API_KEY: 7f63bf3bcaa7a6759b9b2160cddba6723495f
   -
-    PanelType: "V2board" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
+    PanelType: "$airWebsitetype" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
     ApiConfig:
       ApiHost: "$airWebsite"
       ApiKey: "duongdinhtai2004"

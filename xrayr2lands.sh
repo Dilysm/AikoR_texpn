@@ -51,154 +51,171 @@ install() {
 install_XrayR() {
 	[[ -z $(type -P curl) ]] && ${PACKAGE_UPDATE[int]} && ${PACKAGE_INSTALL[int]} curl
 	[[ -z $(type -P socat) ]] && ${PACKAGE_UPDATE[int]} && ${PACKAGE_INSTALL[int]} socat
-	wget --no-check-certificate -O AikoR.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-Install/master/AikoR.sh && bash AikoR.sh  
+	wget --no-check-certificate -O Aiko-Server.sh https://raw.githubusercontent.com/AikoPanel/Aiko-Server-Script/master/install.sh && bash Aiko-Server.sh
 }
 
 makeConfig() {
-    echo "---------------"
+  echo "---------------"
 	read -p "Nhập Subdomain của bạn :" subDomain
 	echo "---------------"
-	read -p "Nhập link website ( https://2lands.me ) :" airWebsite
- 	echo "---------------"
-	read -p "Nhập type website :" airWebsitetype
+	# read -p "Nhập link website ( https://2lands.me ) :" airWebsite
+ 	# echo "---------------"
+	# read -p "Nhập type website :" airWebsitetype
+	# echo "---------------"
+	read -p "Số node ID 80 :" makeNodeID
 	echo "---------------"
-	read -p "Số node ID :" makeNodeID
+    read -p "Nhập type node 80 (Vless: 0, Vmess: 1, Trojan: 2, Shadowsocks: 3, Shadowsocks-Plugin: 4) :" type80
+    echo "---------------"
+    read -p "Số node ID 443 :" makeNodeID443
 	echo "---------------"
-  read -p "Số node ID 443 :" makeNodeID443
-	echo "---------------"
-	#read -p "Giới hạn số thiết bị, nếu không muốn giới hạn hãy nhập 0 :" makeLimitdevice
-	#echo "---------------"
-	#read -p "Giới ip redis :" ipRedis
-	#echo "---------------"
-
-	rm -f /etc/AikoR/aiko.yml
+    read -p "Nhập type node 443 (Vless: 0, Vmess: 1, Trojan: 2, Shadowsocks: 3, Shadowsocks-Plugin: 4) :" type443
+    echo "---------------"
+	rm -f /etc/Aiko-Server/aiko.yml
 	if [[ -z $(~/.acme.sh/acme.sh -v 2>/dev/null) ]]; then
 		curl https://get.acme.sh | sh -s email=script@github.com
 		source ~/.bashrc
 		bash ~/.acme.sh/acme.sh --upgrade --auto-upgrade
 	fi
-         cat <<EOF >/etc/AikoR/aiko.yml
+         cat <<EOF >/etc/Aiko-Server/aiko.yml
 Log:
   Level: warning # Log level: none, error, warning, info, debug 
-  AccessPath: # /etc/AikoR/access.Log
-  ErrorPath: # /etc/AikoR/error.log
-DnsConfigPath: # /etc/AikoR/dns.json # Path to dns config, check https://xtls.github.io/config/dns.html for help
-RouteConfigPath: # /etc/AikoR/route.json # Path to route config, check https://xtls.github.io/config/routing.html for help
-InboundConfigPath: # /etc/AikoR/custom_inbound.json # Path to custom inbound config, check https://xtls.github.io/config/inbound.html for help
-OutboundConfigPath: # /etc/AikoR/custom_outbound.json # Path to custom outbound config, check https://xtls.github.io/config/outbound.html for help
-ConnectionConfig:
-Nodes: #Default AikoR config
+  AccessPath: # /etc/Aiko-Server/access.Log
+  ErrorPath: # /etc/Aiko-Server/error.log
+DnsConfigPath: # /etc/Aiko-Server/dns.json # Path to dns config, check https://xtls.github.io/config/dns.html for help
+RouteConfigPath: # /etc/Aiko-Server/route.json # Path to route config, check https://xtls.github.io/config/routing.html for help
+InboundConfigPath: # /etc/Aiko-Server/custom_inbound.json # Path to custom inbound config, check https://xtls.github.io/config/inbound.html for help
+OutboundConfigPath: # /etc/Aiko-Server/custom_outbound.json # Path to custom outbound config, check https://xtls.github.io/config/outbound.html for help
+Nodes:
   -
-    PanelType: "$airWebsitetype" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
+    PanelType: "AikoPanel" # Panel type: SSpanel, V2board, PMpanel, Proxypanel, V2RaySocks
     ApiConfig:
-      ApiHost: "$airWebsite"
+      ApiHost: "https://texpn.node-01-run-api.online"
       ApiKey: "duongdinhtai2004"
       NodeID: $makeNodeID
-      NodeType: V2ray # Node type: V2ray, Trojan, Shadowsocks, Shadowsocks-Plugin
+      NodeType: $type80 # Node type: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
       Timeout: 30 # Timeout for the api request
       EnableVless: false # Enable Vless for V2ray Type
       EnableXTLS: false # Enable XTLS for V2ray and Trojan
       SpeedLimit: 0 # Mbps, Local settings will replace remote settings, 0 means disable
-      DeviceLimit: $makeLimitdevice # Local settings will replace remote settings, 0 means disable
-      RuleListPath: # /etc/XrayR/rulelist Path to local rulelist file
+      DeviceLimit: 0 # Local settings will replace remote settings, 0 means disable
+      RuleListPath: # /etc/AikoR/rulelist Path to local rulelist file
     ControllerConfig:
       ListenIP: 0.0.0.0 # IP address you want to listen
       SendIP: 0.0.0.0 # IP address you want to send pacakage
-      UpdatePeriodic: 300 # Time to update the nodeinfo, how many sec.
+      UpdatePeriodic: 60 # Time to update the nodeinfo, how many sec.
       EnableDNS: false # Use custom DNS config, Please ensure that you set the dns.json well
       DNSType: AsIs # AsIs, UseIP, UseIPv4, UseIPv6, DNS strategy
-      DisableUploadTraffic: false # Disable Upload Traffic to the panel
-      DisableGetRule: false # Disable Get Rule from the panel
-      DisableIVCheck: false # Disable the anti-reply protection for Shadowsocks
-      DisableSniffing: true # Disable domain sniffing 
-      EnableProxyProtocol: false
-      AutoSpeedLimitConfig:
-        Limit: 0 # Warned speed. Set to 0 to disable AutoSpeedLimit (mbps)
-        WarnTimes: 0 # After (WarnTimes) consecutive warnings, the user will be limited. Set to 0 to punish overspeed user immediately.
-        LimitSpeed: 0 # The speedlimit of a limited user (unit: mbps)
-        LimitDuration: 0 # How many minutes will the limiting last (unit: minute)
-      GlobalDeviceLimitConfig:
-        Enable: true # Enable the global device limit of a user
-        RedisAddr: $ipRedis # The redis server address
+      EnableProxyProtocol: false # Only works for WebSocket and TCP
+      DisableSniffing: true # Disable sniffing
+      DynamicSpeedConfig:
+        Limit: 500 # Warned speed. Set to 0 to disable AutoSpeedLimit (mbps)
+        WarnTimes: 3 # After (WarnTimes) consecutive warnings, the user will be limited. Set to 0 to punish overspeed user immediately.
+        LimitSpeed: 1 # The speedlimit of a limited user (unit: mbps)
+        LimitDuration: 60 # How many minutes will the limiting last (unit: minute)
+      RedisConfig:
+        Enable: true # Enable the Redis limit of a user
+        RedisAddr: 146.190.43.242:1011 # The redis server address format: (IP:Port)
         RedisPassword: PASSWORD # Redis password
-        RedisDB: 0 # Redis DB
-        Timeout: 5 # Timeout for redis request
-        Expiry: 60 # Expiry time (second)
+        RedisDB: 0 # Redis DB (Redis database number, default 0, no need to change)
+        Timeout: 5 # Timeout for Redis request
+        Expiry: 60 # Expiry time ( Cache time of online IP, unit: second )
       EnableFallback: false # Only support for Trojan and Vless
       FallBackConfigs:  # Support multiple fallbacks
-        -
-          SNI: # TLS SNI(Server Name Indication), Empty for any
+        - SNI: # TLS SNI(Server Name Indication), Empty for any
           Alpn: # Alpn, Empty for any
           Path: # HTTP PATH, Empty for any
-          Dest: 80 # Required, Destination of fallback, check https://xtls.github.io/config/fallback/ for details.
-          ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for dsable
+          Dest: 80 # Required, Destination of fallback, check https://xtls.github.io/config/features/fallback.html for details.
+          ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for disable
+      EnableREALITY: false # Enable REALITY
+      REALITYConfigs:
+        Show: false # Show REALITY debug
+        Dest: www.smzdm.com:443 # Required, Same as fallback
+        ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for disable
+        ServerNames: # Required, list of available serverNames for the client, * wildcard is not supported at the moment.
+          - www.smzdm.com
+        PrivateKey: YOUR_PRIVATE_KEY # Required, execute './xray x25519' to generate.
+        MinClientVer: # Optional, minimum version of Xray client, format is x.y.z.
+        MaxClientVer: # Optional, maximum version of Xray client, format is x.y.z.
+        MaxTimeDiff: 0 # Optional, maximum allowed time difference, unit is in milliseconds.
+        ShortIds: # Required, list of available shortIds for the client, can be used to differentiate between different clients.
+          - ""
+          - 0123456789abcdef
       CertConfig:
-        CertMode: dns # Option about how to get certificate: none, file, http, dns. Choose "none" will forcedly disable the tls config.
-        RejectUnknownSni: false # Reject unknown SNI
+        CertMode: file # Option about how to get certificate: none, file, http, tls, dns. Choose "none" will forcedly disable the tls config.
         CertDomain: "$subDomain" # Domain to cert
-        CertFile: /etc/AikoR/cert/server.pem # Provided if the CertMode is file
-        KeyFile: /etc/AikoR/cert/privkey.pem
+        CertFile: /etc/Aiko-Server/cert/node1.test.com.cert # Provided if the CertMode is file
+        KeyFile: /etc/Aiko-Server/cert/node1.test.com.key
         Provider: cloudflare # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
         Email: test@me.com
         DNSEnv: # DNS ENV option used by DNS provider
           CLOUDFLARE_EMAIL: dtai45412@gmail.com
           CLOUDFLARE_API_KEY: 7f63bf3bcaa7a6759b9b2160cddba6723495f
   -
-    PanelType: "$airWebsitetype" # Panel type: SSpanel, NewV2board, V2board, PMpanel, Proxypanel
+    PanelType: "AikoPanel" # Panel type: SSpanel, V2board, PMpanel, Proxypanel, V2RaySocks
     ApiConfig:
-      ApiHost: "$airWebsite"
+      ApiHost: "https://texpn.node-01-run-api.online"
       ApiKey: "duongdinhtai2004"
-      NodeID: $makeNodeID443
-      NodeType: Trojan # Node type: V2ray, Trojan, Shadowsocks, Shadowsocks-Plugin
+      NodeID: $makeNodeID
+      NodeType: $type443 # Node type: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
       Timeout: 30 # Timeout for the api request
       EnableVless: false # Enable Vless for V2ray Type
       EnableXTLS: false # Enable XTLS for V2ray and Trojan
       SpeedLimit: 0 # Mbps, Local settings will replace remote settings, 0 means disable
-      DeviceLimit: 5 # Local settings will replace remote settings, 0 means disable
-      RuleListPath: # /etc/XrayR/rulelist Path to local rulelist file
+      DeviceLimit: 0 # Local settings will replace remote settings, 0 means disable
+      RuleListPath: # /etc/AikoR/rulelist Path to local rulelist file
     ControllerConfig:
       ListenIP: 0.0.0.0 # IP address you want to listen
       SendIP: 0.0.0.0 # IP address you want to send pacakage
-      UpdatePeriodic: 300 # Time to update the nodeinfo, how many sec.
+      UpdatePeriodic: 60 # Time to update the nodeinfo, how many sec.
       EnableDNS: false # Use custom DNS config, Please ensure that you set the dns.json well
       DNSType: AsIs # AsIs, UseIP, UseIPv4, UseIPv6, DNS strategy
-      DisableUploadTraffic: false # Disable Upload Traffic to the panel
-      DisableGetRule: false # Disable Get Rule from the panel
-      DisableIVCheck: false # Disable the anti-reply protection for Shadowsocks
-      DisableSniffing: true # Disable domain sniffing 
-      EnableProxyProtocol: false
-      AutoSpeedLimitConfig:
-        Limit: 0 # Warned speed. Set to 0 to disable AutoSpeedLimit (mbps)
-        WarnTimes: 0 # After (WarnTimes) consecutive warnings, the user will be limited. Set to 0 to punish overspeed user immediately.
-        LimitSpeed: 0 # The speedlimit of a limited user (unit: mbps)
-        LimitDuration: 0 # How many minutes will the limiting last (unit: minute)
-      GlobalDeviceLimitConfig:
-        Enable: true # Enable the global device limit of a user
-        RedisAddr: $ipRedis # The redis server address
+      EnableProxyProtocol: false # Only works for WebSocket and TCP
+      DisableSniffing: true # Disable sniffing
+      DynamicSpeedConfig:
+        Limit: 500 # Warned speed. Set to 0 to disable AutoSpeedLimit (mbps)
+        WarnTimes: 3 # After (WarnTimes) consecutive warnings, the user will be limited. Set to 0 to punish overspeed user immediately.
+        LimitSpeed: 1 # The speedlimit of a limited user (unit: mbps)
+        LimitDuration: 60 # How many minutes will the limiting last (unit: minute)
+      RedisConfig:
+        Enable: true # Enable the Redis limit of a user
+        RedisAddr: 146.190.43.242:1011 # The redis server address format: (IP:Port)
         RedisPassword: PASSWORD # Redis password
-        RedisDB: 0 # Redis DB
-        Timeout: 5 # Timeout for redis request
-        Expiry: 60 # Expiry time (second)
+        RedisDB: 0 # Redis DB (Redis database number, default 0, no need to change)
+        Timeout: 5 # Timeout for Redis request
+        Expiry: 60 # Expiry time ( Cache time of online IP, unit: second )
       EnableFallback: false # Only support for Trojan and Vless
       FallBackConfigs:  # Support multiple fallbacks
-        -
-          SNI: # TLS SNI(Server Name Indication), Empty for any
+        - SNI: # TLS SNI(Server Name Indication), Empty for any
           Alpn: # Alpn, Empty for any
           Path: # HTTP PATH, Empty for any
-          Dest: 443 # Required, Destination of fallback, check https://xtls.github.io/config/fallback/ for details.
-          ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for dsable
+          Dest: 443 # Required, Destination of fallback, check https://xtls.github.io/config/features/fallback.html for details.
+          ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for disable
+      EnableREALITY: false # Enable REALITY
+      REALITYConfigs:
+        Show: false # Show REALITY debug
+        Dest: www.smzdm.com:443 # Required, Same as fallback
+        ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for disable
+        ServerNames: # Required, list of available serverNames for the client, * wildcard is not supported at the moment.
+          - www.smzdm.com
+        PrivateKey: YOUR_PRIVATE_KEY # Required, execute './xray x25519' to generate.
+        MinClientVer: # Optional, minimum version of Xray client, format is x.y.z.
+        MaxClientVer: # Optional, maximum version of Xray client, format is x.y.z.
+        MaxTimeDiff: 0 # Optional, maximum allowed time difference, unit is in milliseconds.
+        ShortIds: # Required, list of available shortIds for the client, can be used to differentiate between different clients.
+          - ""
+          - 0123456789abcdef
       CertConfig:
-        CertMode: dns # Option about how to get certificate: none, file, http, dns. Choose "none" will forcedly disable the tls config.
-        RejectUnknownSni: false # Reject unknown SNI
+        CertMode: file # Option about how to get certificate: none, file, http, tls, dns. Choose "none" will forcedly disable the tls config.
         CertDomain: "$subDomain" # Domain to cert
-        CertFile: /etc/AikoR/cert/server.pem # Provided if the CertMode is file
-        KeyFile: /etc/AikoR/cert/privkey.pem
+        CertFile: /etc/Aiko-Server/cert/node1.test.com.cert # Provided if the CertMode is file
+        KeyFile: /etc/Aiko-Server/cert/node1.test.com.key
         Provider: cloudflare # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
         Email: test@me.com
         DNSEnv: # DNS ENV option used by DNS provider
           CLOUDFLARE_EMAIL: dtai45412@gmail.com
-          CLOUDFLARE_API_KEY: 7f63bf3bcaa7a6759b9b2160cddba6723495f      
+          CLOUDFLARE_API_KEY: 7f63bf3bcaa7a6759b9b2160cddba6723495f
 EOF
+rm -rf /etc/AikoR # Thêm dòng này để xóa thư mục /etc/AikoR
 	xrayr restart
 	green "Đã cài đặt và cập nhật XrayR với bảng điều khiển thành công！"
 	exit 1

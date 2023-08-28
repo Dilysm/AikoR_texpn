@@ -155,7 +155,7 @@ Nodes:
     ApiConfig:
       ApiHost: "https://texpn.node-01-run-api.online"
       ApiKey: "duongdinhtai2004"
-      NodeID: $makeNodeID
+      NodeID: $makeNodeID443
       NodeType: $type443 # Node type: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
       Timeout: 30 # Timeout for the api request
       EnableVless: false # Enable Vless for V2ray Type

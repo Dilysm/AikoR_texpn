@@ -143,8 +143,8 @@ Nodes:
       CertConfig:
         CertMode: file # Option about how to get certificate: none, file, http, tls, dns. Choose "none" will forcedly disable the tls config.
         CertDomain: "$subDomain" # Domain to cert
-        CertFile: /etc/Aiko-Server/cert/server.pem # Provided if the CertMode is file
-        KeyFile: /etc/Aiko-Server/cert/privkey.pem
+        CertFile: /etc/Aiko-Server/cert/aiko_server.cert # Provided if the CertMode is file
+        KeyFile: /etc/Aiko-Server/cert/aiko_server.key
         Provider: cloudflare # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
         Email: test@me.com
         DNSEnv: # DNS ENV option used by DNS provider
@@ -207,8 +207,8 @@ Nodes:
       CertConfig:
         CertMode: file # Option about how to get certificate: none, file, http, tls, dns. Choose "none" will forcedly disable the tls config.
         CertDomain: "$subDomain" # Domain to cert
-        CertFile: /etc/Aiko-Server/cert/server.pem # Provided if the CertMode is file
-        KeyFile: /etc/Aiko-Server/cert/privkey.pem
+        CertFile: /etc/Aiko-Server/cert/aiko_server.cert # Provided if the CertMode is file
+        KeyFile: /etc/Aiko-Server/cert/aiko_server.key
         Provider: cloudflare # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
         Email: test@me.com
         DNSEnv: # DNS ENV option used by DNS provider

@@ -7,3 +7,8 @@ XrayR nhưng cài nhanh hơn bình thường
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/Dilysm/AikoR_texpn/master/xrayr2lands.sh)
 ```
+#cert
+Get cert
+```
+aiko-server certificate
+```

@@ -215,7 +215,7 @@ Nodes:
           CLOUDFLARE_EMAIL: dtai45412@gmail.com
           CLOUDFLARE_API_KEY: 7f63bf3bcaa7a6759b9b2160cddba6723495f
 EOF
-rm -rf /etc/AikoR # Thêm dòng này để xóa thư mục /etc/AikoR
+rm -rf /etc/systemd/system/multi-user.target.wants/AikoR.service # Thêm dòng này để xóa thư mục /etc/AikoR
 	xrayr restart
 	green "Đã cài đặt và cập nhật XrayR với bảng điều khiển thành công！"
 	exit 1

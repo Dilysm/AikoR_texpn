@@ -113,7 +113,7 @@ Nodes:
         LimitSpeed: 1 # The speedlimit of a limited user (unit: mbps)
         LimitDuration: 60 # How many minutes will the limiting last (unit: minute)
       RedisConfig:
-        Enable: true # Enable the Redis limit of a user
+        Enable: false # Enable the Redis limit of a user
         RedisAddr: 146.190.106.99:1011 # The redis server address format: (IP:Port)
         RedisPassword: PASSWORD # Redis password
         RedisDB: 0 # Redis DB (Redis database number, default 0, no need to change)
@@ -177,7 +177,7 @@ Nodes:
         LimitSpeed: 1 # The speedlimit of a limited user (unit: mbps)
         LimitDuration: 60 # How many minutes will the limiting last (unit: minute)
       RedisConfig:
-        Enable: true # Enable the Redis limit of a user
+        Enable: false # Enable the Redis limit of a user
         RedisAddr: 146.190.106.99:1011 # The redis server address format: (IP:Port)
         RedisPassword: PASSWORD # Redis password
         RedisDB: 0 # Redis DB (Redis database number, default 0, no need to change)

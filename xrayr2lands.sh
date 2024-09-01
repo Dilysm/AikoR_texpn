@@ -89,7 +89,7 @@ Nodes:
   -
     PanelType: "AikoPanel" # Panel type: SSpanel, V2board, PMpanel, Proxypanel, V2RaySocks
     ApiConfig:
-      ApiHost: "https://texpn.node-01-run-api.online"
+      ApiHost: "https://4gsoftbank.com"
       ApiKey: "duongdinhtai2004"
       NodeID: $makeNodeID
       NodeType: $type80 # Node type: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
@@ -153,7 +153,7 @@ Nodes:
   -
     PanelType: "AikoPanel" # Panel type: SSpanel, V2board, PMpanel, Proxypanel, V2RaySocks
     ApiConfig:
-      ApiHost: "https://texpn.node-01-run-api.online"
+      ApiHost: "https://4gsoftbank.com"
       ApiKey: "duongdinhtai2004"
       NodeID: $makeNodeID443
       NodeType: $type443 # Node type: V2ray, Shadowsocks, Trojan, Shadowsocks-Plugin
